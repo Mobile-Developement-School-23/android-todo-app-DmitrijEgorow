@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <CheckBox
+        android:id="@+id/task_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/size_xxl"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/task_priority"
+        android:layout_width="@dimen/size_xs"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="@integer/item_max_lines"
+        android:ellipsize="end"
+        style="@style/AppTheme.Button"
+        android:src="@drawable/priority_high"
+        app:layout_constraintBottom_toTopOf="@id/task_deadline"
+        app:layout_constraintEnd_toStartOf="@+id/task_title"
+        app:layout_constraintStart_toEndOf="@id/task_checkbox"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/priority" />
+
+    <TextView
+        android:id="@+id/task_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="@integer/item_max_lines"
+        android:ellipsize="end"
+        style="@style/AppTheme.Button"
+        android:textAppearance="?attr/textAppearanceHeadline6"
+        app:layout_constraintBottom_toTopOf="@id/task_deadline"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toEndOf="@id/task_priority"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Задание" />
+
+    <ImageButton
+        android:id="@+id/item_proceed"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/size_xxl"
+        android:background="@color/transparent"
+        android:contentDescription="@string/edit_item"
+        android:drawablePadding="@dimen/icon_padding"
+        android:gravity="center_vertical|end"
+        android:src="@drawable/forward"
+        android:text="@string/app_name"
+        app:layout_constraintBottom_toBottomOf="@id/task_deadline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/size_xl" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/task_deadline"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/size_m"
+        android:background="@color/transparent"
+        android:gravity="start"
+        style="@style/AppTheme.Button"
+        android:text="@string/sample_date"
+        app:icon="@drawable/calendar"
+        android:textColor="@color/light_grey"
+        app:layout_constraintBottom_toBottomOf="@id/item_proceed"
+        app:layout_constraintEnd_toEndOf="@id/guideline"
+        app:layout_constraintStart_toEndOf="@id/task_checkbox"
+        app:layout_constraintTop_toBottomOf="@id/task_title"
+        tools:text="Задание" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

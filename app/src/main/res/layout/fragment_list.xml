@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.ListFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_xxxl"
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <!--<ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerInside"
+                android:fitsSystemWindows="true"
+                app:layout_collapseMode="parallax"
+                android:layout_gravity="bottom|end"
+                android:src="@drawable/visibility"/>-->
+
+            <TextView
+                android:id="@+id/completed_deals_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:text="@string/completed"
+                android:gravity="bottom"
+                style="@style/AppTheme.Button"
+                android:layout_margin="@dimen/size_s"
+                android:fitsSystemWindows="true"
+                android:src="@mipmap/ic_launcher"/>
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?attr/textAppearanceHeadline4"
+                    android:text="@string/my_deals"
+                    android:gravity="center_vertical"
+                    style="@style/AppTheme.Toolbar"
+                    app:layout_scrollFlags="enterAlwaysCollapsed"
+                    android:fitsSystemWindows="true"
+                    app:layout_collapseMode="parallax"
+                    android:src="@mipmap/ic_launcher"/>
+
+            </com.google.android.material.appbar.MaterialToolbar>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.constraintlayout.utils.widget.ImageFilterButton
+        android:id="@+id/visibility"
+        android:contentDescription="@string/app_name"
+        android:layout_width="@dimen/size_l"
+        android:layout_height="@dimen/size_l"
+        android:layout_margin="@dimen/fab_margin"
+        android:elevation="@dimen/size_l"
+        android:text="@string/app_name"
+        app:layout_anchor="@id/app_bar"
+        app:layout_anchorGravity="end"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:srcCompat="@drawable/visibility"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_margin="@dimen/fab_margin"
+        android:contentDescription="@string/add_new_task"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@android:drawable/ic_input_add" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.ListFragment"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_list"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

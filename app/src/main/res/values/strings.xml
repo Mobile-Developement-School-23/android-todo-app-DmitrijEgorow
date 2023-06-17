@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">TaskList</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="task_hint_text">Что надо сделать?</string>
+    <string name="delete">Удалить</string>
+    <string name="add_new_task">Добавить новую задачу</string>
+    <string name="deadline_text">Сделать до</string>
+    <string name="item_text_intro">Дело</string>
+    <string name="save_button_text">Сохранить</string>
+    <string name="cancel_button_text">Отменить</string>
+    <string name="new_item_text">Новое</string>
+    <string name="edit_item">Редактировать</string>
+    <string name="sample_date">14.06.2023</string>
+    <string name="priority">Приоритет</string>
+    <string name="task_template_done">%1$s</string>
+    <string name="my_deals">Мои дела</string>
+    <string name="completed">Выполнено</string>
+    <string name="completed_with_num">Выполнено дел: %1$d</string>
+</resources>
