@@ -16,6 +16,7 @@ import com.viable.tasklist.R
 import com.viable.tasklist.TodoItemsApplication
 import com.viable.tasklist.data.Importance
 import com.viable.tasklist.data.TodoItem
+import com.viable.tasklist.data.TodoItemsRepository
 import com.viable.tasklist.databinding.FragmentEditBinding
 import java.time.Instant
 import java.time.LocalDateTime
@@ -33,7 +34,9 @@ class EditFragment : Fragment() {
 
     private val binding get() = _binding!!
 
-    private val itemViewModel: ItemViewModel by activityViewModels()
+    private lateinit var repository: TodoItemsRepository
+
+    private val itemViewModel: ItemViewModel by activityViewModels { ViewModelFactory(repository) }
 
     private lateinit var submitButton: Button
 
@@ -51,7 +54,7 @@ class EditFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         submitButton = view.findViewById(R.id.submit_item)
-        val repository = (requireActivity().application as TodoItemsApplication).repository
+        repository = (requireActivity().application as TodoItemsApplication).repository
 
         val types = resources.getStringArray(R.array.priorities)
         val arrayAdapter: ArrayAdapter<*> =
@@ -92,10 +95,14 @@ class EditFragment : Fragment() {
             }
             var deadline: LocalDateTime? = null
             if (binding.switchDeadline.isChecked) {
-                deadline = LocalDateTime.ofInstant(Instant.ofEpochMilli(chosenDate), ZoneId.systemDefault())
+                deadline = LocalDateTime.ofInstant(
+                    Instant.ofEpochMilli(chosenDate),
+                    ZoneId.systemDefault()
+                )
             }
+            val currentItem = itemViewModel.selectedTodoItem.value
             val todoItem = TodoItem(
-                id = UUID.randomUUID().toString(),
+                id = currentItem?.id ?: UUID.randomUUID().toString(),
                 text = binding.taskDescription.text.toString(),
                 importance = importance,
                 deadline = deadline,
@@ -103,11 +110,12 @@ class EditFragment : Fragment() {
                 createdAt = LocalDateTime.now(),
             )
             if (itemViewModel.selectedTodoItem.value != null) {
-                repository.updateItem(itemViewModel.selectedPosition.value!!, todoItem)
-            } else {
-                repository.insertNewItem(
-                    todoItem,
+                itemViewModel.updateTodoItem(
+                    itemViewModel.selectedPosition.value!!,
+                    todoItem
                 )
+            } else {
+                itemViewModel.insertNewItem(todoItem)
             }
         }
 

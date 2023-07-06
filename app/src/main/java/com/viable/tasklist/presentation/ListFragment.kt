@@ -1,16 +1,18 @@
 package com.viable.tasklist.presentation
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.content.res.Resources
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.StrikethroughSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.coroutineScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,38 +20,53 @@ import com.viable.tasklist.R
 import com.viable.tasklist.TodoItemsApplication
 import com.viable.tasklist.data.Importance
 import com.viable.tasklist.data.TodoItem
+import com.viable.tasklist.data.TodoItemsRepository
 import com.viable.tasklist.databinding.FragmentListBinding
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.util.Locale
 import java.util.UUID
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
 
 /**
  * A [Fragment] to show all tasks.
  */
 class ListFragment : Fragment() {
 
+    private val sharedPreferencesName = "revision"
+
     private var _binding: FragmentListBinding? = null
 
     private val binding get() = _binding!!
 
-    private val itemViewModel: ItemViewModel by activityViewModels()
+    private lateinit var repository: TodoItemsRepository
 
-    private var items: List<TodoItem> = emptyList()
+    private val itemViewModel: ItemViewModel by activityViewModels { ViewModelFactory(repository) }
+
+    // private var items: List<TodoItem> = emptyList()
 
     private lateinit var adapter: ItemAdapter
+
+    private lateinit var preferences: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         _binding = FragmentListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        preferences = this.requireActivity()
+            .getSharedPreferences(sharedPreferencesName, Context.MODE_PRIVATE)
+
 
         binding.toolbarLayout.setContentScrimColor(
             ResourcesCompat.getColor(
@@ -59,15 +76,15 @@ class ListFragment : Fragment() {
             ),
         )
 
-        val repository = (requireActivity().application as TodoItemsApplication).repository
+        repository = (requireActivity().application as TodoItemsApplication).repository
         itemViewModel.setTodoItem(null)
-        itemViewModel.loadItems(repository)
-        adapter = ItemAdapter({ position ->
+        itemViewModel.loadItems()
+        adapter = ItemAdapter({ position, _ ->
             itemViewModel.setSelectedPosition(position)
-            itemViewModel.setTodoItem(items[position])
+            itemViewModel.setTodoItem(adapter.tasks[position])
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }, DefaultItemFormatter(resources))
-        items = itemViewModel.items.value
+        // items = itemViewModel.tasks.value
         val newItem = TodoItem(
             id = UUID.randomUUID().toString(),
             text = getString(R.string.new_item_text),
@@ -75,9 +92,31 @@ class ListFragment : Fragment() {
             isCompleted = false,
             createdAt = LocalDateTime.now(),
         )
-        adapter.tasks = items.toMutableList().apply {
-            add(newItem)
+        lifecycle.coroutineScope.launch(Dispatchers.IO) {
+            itemViewModel.tasks.collect { uiState ->
+                withContext(Dispatchers.Main) {
+                    when (uiState) {
+                        is TaskUi.Success ->
+                            adapter.tasks = uiState.data.toMutableList().apply {
+                                add(newItem)
+                            }
+
+
+                        is TaskUi.Error -> Any()
+                        is TaskUi.Empty ->
+                            adapter.tasks = mutableListOf(newItem)
+
+
+                        else -> listOf(newItem)
+                    }
+                }
+            }
         }
+
+        println(adapter.tasks)
+        /*adapter.tasks = items.toMutableList().apply {
+            add(newItem)
+        }*/
 
         ResourcesCompat.getDrawable(resources, R.drawable.divider, requireContext().theme)?.let {
             binding.recyclerList.addItemDecoration(
@@ -100,6 +139,11 @@ class ListFragment : Fragment() {
         itemTouchHelper.attachToRecyclerView(binding.recyclerList)
 
         binding.completedDealsText.text = getString(R.string.completed_with_num, 0)
+
+        binding.swipeRefresh.setOnRefreshListener {
+            itemViewModel.loadItems(forceRefresh = true)
+            binding.swipeRefresh.isRefreshing = false
+        }
 
         binding.visibility.setOnClickListener { v ->
             v.isActivated = !(v.isActivated)

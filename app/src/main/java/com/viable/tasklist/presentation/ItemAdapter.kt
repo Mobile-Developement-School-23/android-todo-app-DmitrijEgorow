@@ -10,7 +10,7 @@ import com.viable.tasklist.R
 import com.viable.tasklist.data.TodoItem
 import com.viable.tasklist.domain.CommonCallbackImpl
 
-class ItemAdapter(private val interactionListener: ItemInteractionListener, private val formatter: ItemFormatter) : RecyclerView.Adapter<ViewHolder>() {
+class ItemAdapter(private val interactionListener: ItemInteractionListener<TodoItem>, private val formatter: ItemFormatter) : RecyclerView.Adapter<ViewHolder>() {
 
     var tasks: MutableList<TodoItem> = arrayListOf<TodoItem>()
         set(value) {
@@ -40,7 +40,7 @@ class ItemAdapter(private val interactionListener: ItemInteractionListener, priv
                     parent,
                     false,
                 ),
-                interactionListener = interactionListener,
+                itemProceedListener = interactionListener,
                 formatter = formatter,
             )
 
@@ -50,7 +50,7 @@ class ItemAdapter(private val interactionListener: ItemInteractionListener, priv
                     parent,
                     false,
                 ),
-                interactionListener = interactionListener,
+                itemProceedListener = interactionListener,
                 formatter = formatter,
             )
 

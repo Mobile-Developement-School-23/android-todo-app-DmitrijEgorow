@@ -12,7 +12,7 @@ import com.viable.tasklist.data.TodoItem
 
 class ItemViewHolder(
     itemView: View,
-    private val interactionListener: ItemInteractionListener,
+    private val itemProceedListener: ItemInteractionListener<TodoItem>,
     private val formatter: ItemFormatter,
 ) : RecyclerView.ViewHolder(itemView) {
 
@@ -45,7 +45,10 @@ class ItemViewHolder(
         }
         itemCheckBox.isChecked = isCompletedItem
         itemProceed.setOnClickListener {
-            interactionListener.onClick(this.bindingAdapterPosition)
+            itemProceedListener.onClick(this.bindingAdapterPosition, preview)
+        }
+        itemTitle.setOnClickListener {
+
         }
 
         when (preview.importance) {
@@ -58,7 +61,7 @@ class ItemViewHolder(
             }
 
             else ->
-                itemPriority?.visibility = View.GONE
+                itemPriority?.visibility = View.INVISIBLE
         }
 
         itemCheckBox.setOnClickListener { view ->
