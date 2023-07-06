@@ -8,13 +8,17 @@ import java.util.Locale
 
 class DefaultItemFormatter(private val resources: Resources) : ItemFormatter {
     override fun formatDate(date: String?): CharSequence? {
-        if (date != null) {
-            val dateParser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
-            val date = dateParser.parse(date.substring(0, 19))
-            val dateFormatter = SimpleDateFormat("dd MMMM yyyy", Locale("ru"))
+        try {
             if (date != null) {
-                return dateFormatter.format(date)
+                val dateParser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+                val date = dateParser.parse(date.substring(0, 19))
+                val dateFormatter = SimpleDateFormat("dd MMMM yyyy", Locale("ru"))
+                if (date != null) {
+                    return dateFormatter.format(date)
+                }
             }
+        } catch (e: Exception) {
+            return null
         }
         return null
     }

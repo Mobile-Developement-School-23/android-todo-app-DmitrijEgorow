@@ -15,7 +15,6 @@ import androidx.navigation.fragment.findNavController
 import com.viable.tasklist.R
 import com.viable.tasklist.TodoItemsApplication
 import com.viable.tasklist.data.Importance
-import com.viable.tasklist.data.ObtainedData
 import com.viable.tasklist.data.TodoItem
 import com.viable.tasklist.data.TodoItemsRepository
 import com.viable.tasklist.databinding.FragmentEditBinding
@@ -36,9 +35,8 @@ class EditFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var repository: TodoItemsRepository
-    private lateinit var communication: Communication<ObtainedData>
 
-    private val itemViewModel: ItemViewModel by activityViewModels { ViewModelFactory(repository, communication) }
+    private val itemViewModel: ItemViewModel by activityViewModels { ViewModelFactory(repository) }
 
     private lateinit var submitButton: Button
 
@@ -57,7 +55,6 @@ class EditFragment : Fragment() {
 
         submitButton = view.findViewById(R.id.submit_item)
         repository = (requireActivity().application as TodoItemsApplication).repository
-        communication = Communication.Base()
 
         val types = resources.getStringArray(R.array.priorities)
         val arrayAdapter: ArrayAdapter<*> =

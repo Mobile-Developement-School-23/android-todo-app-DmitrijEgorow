@@ -8,13 +8,19 @@ import com.viable.tasklist.data.TodoItemsRepository
 import com.viable.tasklist.data.cache.TodoItemsCacheDataSource
 import com.viable.tasklist.data.cloud.TasksService
 import com.viable.tasklist.data.cloud.TodoItemsCloudDataSource
+import com.viable.tasklist.di.AppComponent
+import com.viable.tasklist.di.AppModule
+import com.viable.tasklist.di.DaggerAppComponent
 import com.viable.tasklist.domain.ImportanceMapper
 import com.viable.tasklist.domain.TaskToCloudMapper
 import com.viable.tasklist.domain.TaskToLocalMapper
+import javax.inject.Inject
 
 class TodoItemsApplication : Application() {
 
     val coreModule = CoreModule(USE_MOCKS)
+
+    lateinit var appComponent: AppComponent
 
     lateinit var cacheDataSource: TodoItemsCacheDataSource
     lateinit var cloudDataSource: TodoItemsCloudDataSource
@@ -27,13 +33,14 @@ class TodoItemsApplication : Application() {
             .setInvocationEvents(InstabugInvocationEvent.SHAKE)
             .build()*/
 
+        appComponent = DaggerAppComponent.builder()
+            .build()
+
         coreModule.init(this)
 
         cacheDataSource = TodoItemsCacheDataSource()
         cloudDataSource = TodoItemsCloudDataSource.DefaultCloudDataSource(
             coreModule.makeService(TasksService::class.java),
-            coreModule.gson,
-
         )
         repository = TodoItemsRepository.Base(
             cacheDataSource,

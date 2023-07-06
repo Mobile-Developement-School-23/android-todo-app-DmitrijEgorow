@@ -10,10 +10,10 @@ interface TodoItemsCloudDataSource {
     suspend fun updateItem(item: TodoItemContainer, revision: Int): TodoSingleItemResponse
     suspend fun deleteItem(itemId: String, revision: Int): TodoSingleItemResponse
 
-    abstract class Abstract() :
+    abstract class Abstract :
         TodoItemsCloudDataSource
 
-    class DefaultCloudDataSource(private val service: TasksService, gson: Gson) :
+    class DefaultCloudDataSource(private val service: TasksService) :
         TodoItemsCloudDataSource.Abstract() {
         override suspend fun getList(): TodoListResponse {
             return service.getList()

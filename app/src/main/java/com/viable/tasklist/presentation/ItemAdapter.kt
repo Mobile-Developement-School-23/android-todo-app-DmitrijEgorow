@@ -10,7 +10,11 @@ import com.viable.tasklist.R
 import com.viable.tasklist.data.TodoItem
 import com.viable.tasklist.domain.CommonCallbackImpl
 
-class ItemAdapter(private val interactionListener: ItemInteractionListener<TodoItem>, private val formatter: ItemFormatter) : RecyclerView.Adapter<ViewHolder>() {
+class ItemAdapter(
+    private val interactionListener: ItemInteractionListener<TodoItem>,
+    private val taskCompletionListener: ItemInteractionListener<Boolean>,
+    private val formatter: ItemFormatter,
+) : RecyclerView.Adapter<ViewHolder>() {
 
     var tasks: MutableList<TodoItem> = arrayListOf<TodoItem>()
         set(value) {
@@ -73,17 +77,28 @@ class ItemAdapter(private val interactionListener: ItemInteractionListener<TodoI
             is ItemViewHolder -> {
                 holder.onBind(tasks[position])
                 val completionListener = ItemCompletionListener { isCompleted ->
-                    setItemCompleted(isCompleted, position)
+                    // setItemCompleted(isCompleted, position)
+                    taskCompletionListener.onClick(position, isCompleted)
                 }
                 holder.completionListener = completionListener
             }
         }
     }
 
-    fun removeItem(position: Int) {
-        tasks = tasks.toMutableList().also { list ->
-            list.removeAt(position)
+    fun removeItem(position: Int): TodoItem {
+        var item: TodoItem
+        tasks = tasks.also { list ->
+            item = list.removeAt(position)
         }
+        notifyItemRemoved(position)
+        return item
+    }
+
+    fun addItem(position: Int, item: TodoItem) {
+        tasks = tasks.apply {
+            add(position, item)
+        }
+        notifyItemInserted(position)
     }
 
     fun setItemCompleted(isCompleted: Boolean, position: Int) {

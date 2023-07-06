@@ -16,5 +16,4 @@ interface TaskDao {
 
     @Query("SELECT * FROM tasks")
     fun getTasks(): Flow<List<TaskEntity>>
-
 }

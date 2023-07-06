@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.viable.tasklist.data.ObtainedData
 import com.viable.tasklist.data.TodoItem
 import com.viable.tasklist.data.TodoItemsRepository
+import com.viable.tasklist.data.cloud.ReceivedData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +18,7 @@ import kotlinx.coroutines.withContext
 
 class ItemViewModel(
     private val repository: TodoItemsRepository,
-    private val communication: Communication<ObtainedData>,
+    // private val communication: Communication<ObtainedData>,
 ) : ViewModel() {
 
     private val _selectedPosition = MutableLiveData(0)
@@ -25,6 +26,10 @@ class ItemViewModel(
 
     private val _selectedTodoItem = MutableLiveData<TodoItem?>(null)
     val selectedTodoItem: LiveData<TodoItem?> get() = _selectedTodoItem
+
+    private val _obtainedData: MutableLiveData<ObtainedData> = MutableLiveData(ObtainedData.Empty(ReceivedData.Empty()))
+    val obtainedData: LiveData<ObtainedData> get() = _obtainedData
+
     private var job: Job? = null
     private var _tasks: MutableStateFlow<TaskUi<List<TodoItem>>> =
         MutableStateFlow(TaskUi.Empty)
@@ -32,7 +37,7 @@ class ItemViewModel(
         get() = _tasks
 
     init {
-        loadItems()
+        loadItems(true)
     }
 
     fun loadItems(forceRefresh: Boolean = false) {
@@ -45,6 +50,7 @@ class ItemViewModel(
     fun updateTodoItem(position: Int, todoItem: TodoItem) {
         viewModelScope.launch(Dispatchers.IO) {
             val obtainedData = repository.updateItem(position, todoItem)
+            loadItems(true)
             Log.d("gsonon", obtainedData.toString())
         }
     }
@@ -56,25 +62,19 @@ class ItemViewModel(
             )
             Log.d("gsonon_insert", obtainedData.toString())
             withContext(Dispatchers.Main) {
-                /*obtainedData.map(object : TasksReceivedDataMapper<String> {
-                    override fun map(data: ReceivedData): String {
-                        Log.d("gsonon_insert_rec", obtainedData.toString()+data.toString())
-                        return ""
-                    }
-                    override fun map(e: Exception): String {
-                        Log.d("gsonon_insert_exc", obtainedData.toString())
-                        // todo notify
-                        return ""
-                    }
-                })*/
-                communication.map(obtainedData)
+                _obtainedData.value = obtainedData
             }
         }
+    }
+
+    fun resetObtainedData() {
+        _obtainedData.value = ObtainedData.Empty(ReceivedData.Empty())
     }
 
     fun deleteTodoItem(todoItemId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val obtainedData = repository.deleteItem(todoItemId)
+            loadItems(true)
             Log.d("gsonon_delete", obtainedData.toString())
         }
     }

@@ -4,8 +4,11 @@ import com.viable.tasklist.data.RevisionableList
 import com.viable.tasklist.data.TodoItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import javax.inject.Inject
 
-class TodoItemsCacheDataSource {
+class TodoItemsCacheDataSource @Inject constructor(
+    //private val dao: TaskDao,
+) {
 
     private var revision = 1
     private val _itemsFlow = MutableStateFlow<RevisionableList<List<TodoItem>>>(
@@ -48,6 +51,19 @@ class TodoItemsCacheDataSource {
             ),
         )
         return _itemsFlow
+    }
+
+    suspend fun deleteItems(itemId: String): Boolean {
+        val tempList = _itemsFlow.value
+        this._itemsFlow.emit(
+            RevisionableList(
+                tempList.flow.toMutableList().apply {
+                    remove(getItemById(itemId))
+                },
+                tempList.revision,
+            ),
+        )
+        return true
     }
 
     suspend fun getItemById(itemId: String): TodoItem {

@@ -24,4 +24,6 @@
     <string name="completed_with_num">Выполнено дел: %1$d</string>
     <string name="sync_error">Ошибка синхронизации</string>
     <string name="sync_success">Успешно</string>
+    <string name="undo_delete">Отменить удаление</string>
+    <string name="one_task_deleted">1 элемент удален</string>
 </resources>

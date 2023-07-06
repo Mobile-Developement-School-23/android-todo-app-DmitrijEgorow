@@ -10,6 +10,7 @@ import com.viable.tasklist.domain.AbstractMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import retrofit2.HttpException
+import javax.inject.Inject
 
 interface TodoItemsRepository {
     suspend fun getItems(forceRefresh: Boolean = false): Flow<RevisionableList<List<TodoItem>>>
@@ -28,16 +29,19 @@ interface TodoItemsRepository {
         override suspend fun getItems(forceRefresh: Boolean): Flow<RevisionableList<List<TodoItem>>> {
             if (cachedDataSource.isEmpty() || forceRefresh) {
                 try {
-                    val response = cloudDataSource.getList()
+                    /*val response = cloudDataSource.getList()
                     val revision = response.revision
                     Log.d("gsonon", "revision $revision")
                     this.revision = revision
-                    val list = response.list
+                    val list = response.list*/
+                    val list = getCloudResponse()
                     val convertedList = ArrayList<TodoItem>()
                     list.forEach { e -> convertedList.add(receiverMapper.map(e)) }
                     cachedDataSource.setItems(convertedList, revision)
                     return cachedDataSource.getItems()
                 } catch (e: HttpException) {
+                    return emptyFlow()
+                } catch (e: Exception) {
                     return emptyFlow()
                 }
             } else {
@@ -45,38 +49,54 @@ interface TodoItemsRepository {
             }
         }
 
+        private suspend fun getCloudResponse(): List<TodoItemResponse> {
+            val response = cloudDataSource.getList()
+            val revision = response.revision
+            Log.d("gsonon", "revision $revision")
+            this.revision = revision
+            return response.list
+        }
+
         override suspend fun insertNewItem(item: TodoItem): ObtainedData {
-            try {
+            return try {
                 cachedDataSource.addItem(item)
                 /*val revisionableData = getItems(true)
-                var revision = 1
-                revisionableData.collectLatest { v -> revision = v.revision }*/
+                        var revision = 1
+                        revisionableData.collectLatest { v -> revision = v.revision }*/
+                getCloudResponse()
                 val container = TodoItemContainer(senderMapper.map(item))
                 val singleItemResponse = cloudDataSource.addItem(container, revision)
-                return returnSuccess(singleItemResponse)
+                returnSuccess(singleItemResponse)
             } catch (e: HttpException) {
-                return returnFail(e)
+                returnFail(e)
+            } catch (e: Exception) {
+                returnFail(e)
             }
         }
 
         override suspend fun updateItem(position: Int, item: TodoItem): ObtainedData {
             return try {
                 val updateList = cachedDataSource.updateItem(position, item)
-                //  write code to obtain item using itemId
-                // val item = cachedDataSource.getItemById(item)
+                getCloudResponse()
                 val container = TodoItemContainer(senderMapper.map(item))
                 val singleItemResponse = cloudDataSource.updateItem(container, revision)
                 returnSuccess(singleItemResponse)
             } catch (e: HttpException) {
+                returnFail(e)
+            } catch (e: Exception) {
                 returnFail(e)
             }
         }
         override suspend fun deleteItem(itemId: String): ObtainedData {
             return try {
                 // todo cachedDataSource.delete
+                cachedDataSource.deleteItems(itemId)
+                getCloudResponse()
                 val singleItemResponse = cloudDataSource.deleteItem(itemId, revision)
                 returnSuccess(singleItemResponse)
             } catch (e: HttpException) {
+                returnFail(e)
+            } catch (e: Exception) {
                 returnFail(e)
             }
         }
