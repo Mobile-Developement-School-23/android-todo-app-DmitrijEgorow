@@ -14,26 +14,25 @@ interface TasksService {
     @POST("list")
     suspend fun addTask(
         @Header("X-Last-Known-Revision") revision: Int,
-        @Body task: TodoItemContainer
+        @Body task: TodoItemContainer,
     ): TodoSingleItemResponse
 
     @PUT("list/{id}")
     suspend fun alterTask(
         @Header("X-Last-Known-Revision") revision: Int,
         @Path(value = "id") id: String,
-        @Body task: TodoItemContainer
+        @Body task: TodoItemContainer,
     ): TodoSingleItemResponse
 
     @PATCH("list")
     suspend fun updateList(
         @Header("X-Last-Known-Revision") revision: Int,
-        @Body listRequest: TodoListContainer
+        @Body listRequest: TodoListContainer,
     ): TodoListResponse
 
     @DELETE("list/{id}")
     suspend fun deleteTask(
         @Header("X-Last-Known-Revision") revision: Int,
-        @Path(value = "id") id: String
+        @Path(value = "id") id: String,
     ): TodoSingleItemResponse
 }
-

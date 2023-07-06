@@ -8,5 +8,5 @@ data class TodoListResponse(
     @SerializedName("revision")
     val revision: Int,
     @SerializedName("status")
-    val status: String
+    val status: String,
 )

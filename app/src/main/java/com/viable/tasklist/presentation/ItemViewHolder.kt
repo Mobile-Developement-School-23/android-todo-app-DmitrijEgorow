@@ -48,7 +48,6 @@ class ItemViewHolder(
             itemProceedListener.onClick(this.bindingAdapterPosition, preview)
         }
         itemTitle.setOnClickListener {
-
         }
 
         when (preview.importance) {

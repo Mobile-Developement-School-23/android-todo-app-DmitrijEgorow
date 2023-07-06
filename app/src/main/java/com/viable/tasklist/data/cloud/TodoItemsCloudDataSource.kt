@@ -3,18 +3,15 @@ package com.viable.tasklist.data.cloud
 import com.google.gson.Gson
 import java.io.Reader
 
-
 interface TodoItemsCloudDataSource {
 
     suspend fun getList(): TodoListResponse
     suspend fun addItem(item: TodoItemContainer, revision: Int): TodoSingleItemResponse
     suspend fun updateItem(item: TodoItemContainer, revision: Int): TodoSingleItemResponse
-    suspend fun deleteItem(item: TodoItemContainer, revision: Int): TodoSingleItemResponse
+    suspend fun deleteItem(itemId: String, revision: Int): TodoSingleItemResponse
 
     abstract class Abstract() :
-        TodoItemsCloudDataSource {
-    }
-
+        TodoItemsCloudDataSource
 
     class DefaultCloudDataSource(private val service: TasksService, gson: Gson) :
         TodoItemsCloudDataSource.Abstract() {
@@ -30,13 +27,14 @@ interface TodoItemsCloudDataSource {
             return service.alterTask(revision, item.element.id, item)
         }
 
-        override suspend fun deleteItem(item: TodoItemContainer, revision: Int): TodoSingleItemResponse {
-            return service.deleteTask(revision, item.element.id)
+        override suspend fun deleteItem(itemId: String, revision: Int): TodoSingleItemResponse {
+            return service.deleteTask(revision, itemId)
         }
     }
 
     abstract class Mock(
-        private val rawResourceReader: Reader, gson: Gson,
+        private val rawResourceReader: Reader,
+        gson: Gson,
     ) : TodoItemsCloudDataSource.Abstract()
 }
 
@@ -76,5 +74,3 @@ class DefaultCloudDataSource(private val service: TasksService, gson: Gson) :
         }
     }
  */
-
-

@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.viable.tasklist.R
 import com.viable.tasklist.TodoItemsApplication
 import com.viable.tasklist.data.Importance
+import com.viable.tasklist.data.ObtainedData
 import com.viable.tasklist.data.TodoItem
 import com.viable.tasklist.data.TodoItemsRepository
 import com.viable.tasklist.databinding.FragmentEditBinding
@@ -35,8 +36,9 @@ class EditFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var repository: TodoItemsRepository
+    private lateinit var communication: Communication<ObtainedData>
 
-    private val itemViewModel: ItemViewModel by activityViewModels { ViewModelFactory(repository) }
+    private val itemViewModel: ItemViewModel by activityViewModels { ViewModelFactory(repository, communication) }
 
     private lateinit var submitButton: Button
 
@@ -55,6 +57,7 @@ class EditFragment : Fragment() {
 
         submitButton = view.findViewById(R.id.submit_item)
         repository = (requireActivity().application as TodoItemsApplication).repository
+        communication = Communication.Base()
 
         val types = resources.getStringArray(R.array.priorities)
         val arrayAdapter: ArrayAdapter<*> =
@@ -97,7 +100,7 @@ class EditFragment : Fragment() {
             if (binding.switchDeadline.isChecked) {
                 deadline = LocalDateTime.ofInstant(
                     Instant.ofEpochMilli(chosenDate),
-                    ZoneId.systemDefault()
+                    ZoneId.systemDefault(),
                 )
             }
             val currentItem = itemViewModel.selectedTodoItem.value
@@ -112,7 +115,7 @@ class EditFragment : Fragment() {
             if (itemViewModel.selectedTodoItem.value != null) {
                 itemViewModel.updateTodoItem(
                     itemViewModel.selectedPosition.value!!,
-                    todoItem
+                    todoItem,
                 )
             } else {
                 itemViewModel.insertNewItem(todoItem)

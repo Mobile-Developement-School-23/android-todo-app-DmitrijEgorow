@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class SwipeToDeleteCallback(
     private val adapter: ItemAdapter,
+    private val deleteItem: (String) -> Unit,
     private val deleteIcon: Drawable,
     private val tickIcon: Drawable,
 ) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
@@ -30,6 +31,7 @@ class SwipeToDeleteCallback(
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         val position = viewHolder.bindingAdapterPosition
         if (direction == ItemTouchHelper.LEFT) {
+            deleteItem(adapter.tasks[position].id)
             adapter.removeItem(position)
         }
         if (direction == ItemTouchHelper.RIGHT) {

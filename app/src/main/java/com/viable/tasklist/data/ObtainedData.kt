@@ -1,9 +1,7 @@
 package com.viable.tasklist.data
 
 import com.viable.tasklist.data.cloud.TodoSingleItemResponse
-import com.viable.tasklist.domain.AbstractMapper
 import com.viable.tasklist.domain.TasksReceivedDataMapper
-
 
 sealed class ObtainedData {
 

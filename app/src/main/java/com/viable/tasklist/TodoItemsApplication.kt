@@ -2,8 +2,6 @@ package com.viable.tasklist
 
 import android.app.Application
 import android.provider.Settings
-import com.instabug.library.Instabug
-import com.instabug.library.invocation.InstabugInvocationEvent
 import com.viable.tasklist.BuildConfig.USE_MOCKS
 import com.viable.tasklist.core.CoreModule
 import com.viable.tasklist.data.TodoItemsRepository
@@ -33,22 +31,21 @@ class TodoItemsApplication : Application() {
 
         cacheDataSource = TodoItemsCacheDataSource()
         cloudDataSource = TodoItemsCloudDataSource.DefaultCloudDataSource(
-            coreModule.makeService(TasksService::class.java), coreModule.gson,
+            coreModule.makeService(TasksService::class.java),
+            coreModule.gson,
 
-            )
+        )
         repository = TodoItemsRepository.Base(
-            cacheDataSource, cloudDataSource,
+            cacheDataSource,
+            cloudDataSource,
             TaskToLocalMapper.BasicCloudToLocalMapper(importanceMapper = ImportanceMapper()),
             TaskToCloudMapper.BasicLocalToCloudMapper(
                 importanceMapper = ImportanceMapper(),
-                getDeviceId()
+                getDeviceId(),
             ),
         )
     }
 
-
     private fun getDeviceId() =
         Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
-
-
 }

@@ -76,8 +76,7 @@ dependencies {
 
     // Room Database
     implementation(libs.androidx.room.runtime)
-    //kapt("androidx.room:room-compiler:2.5.2")
-    ksp("androidx.room:room-compiler:2.5.2")
+    ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
 
     // Networking

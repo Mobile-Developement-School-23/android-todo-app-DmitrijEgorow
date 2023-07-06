@@ -2,7 +2,6 @@ package com.viable.tasklist.domain
 
 import com.viable.tasklist.core.ErrorType
 
-
 /*
 interface TasksDataToUiMapper<T>{
 
@@ -18,7 +17,7 @@ interface TasksDataToUiMapper<T>{
         override fun map(e: Exception) = errorType(e)
     }
 }*/
-interface AbstractDataMapper{
+interface AbstractDataMapper {
     interface Data<S, R> : AbstractDataMapper {
         fun map(data: S): R
     }
@@ -32,5 +31,4 @@ interface AbstractDataMapper{
     }
 
     class Empty : AbstractDataMapper
-
 }

@@ -23,12 +23,9 @@ interface TaskToLocalMapper<FromT, ToT> : AbstractMapper<FromT, ToT> {
             )
 
         private fun convertToDateTime(time: Long): LocalDateTime {
-            return Instant.ofEpochMilli(time)
+            return Instant.ofEpochSecond(time)
                 .atZone(ZoneId.systemDefault())
                 .toLocalDateTime()
         }
     }
 }
-
-
-

@@ -5,17 +5,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.viable.tasklist.data.ObtainedData
 import com.viable.tasklist.data.TodoItem
 import com.viable.tasklist.data.TodoItemsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ItemViewModel(
-    private val repository: TodoItemsRepository
+    private val repository: TodoItemsRepository,
+    private val communication: Communication<ObtainedData>,
 ) : ViewModel() {
 
     private val _selectedPosition = MutableLiveData(0)
@@ -35,7 +37,8 @@ class ItemViewModel(
 
     fun loadItems(forceRefresh: Boolean = false) {
         job = viewModelScope.launch(Dispatchers.IO) {
-            repository.getItems(forceRefresh).collect { item -> _tasks.value = TaskUi.Success(item.flow) }
+            repository.getItems(forceRefresh)
+                .collect { item -> _tasks.value = TaskUi.Success(item.flow) }
         }
     }
 
@@ -51,9 +54,29 @@ class ItemViewModel(
             val obtainedData = repository.insertNewItem(
                 todoItem,
             )
-            Log.d("gsonon", obtainedData.toString())
+            Log.d("gsonon_insert", obtainedData.toString())
+            withContext(Dispatchers.Main) {
+                /*obtainedData.map(object : TasksReceivedDataMapper<String> {
+                    override fun map(data: ReceivedData): String {
+                        Log.d("gsonon_insert_rec", obtainedData.toString()+data.toString())
+                        return ""
+                    }
+                    override fun map(e: Exception): String {
+                        Log.d("gsonon_insert_exc", obtainedData.toString())
+                        // todo notify
+                        return ""
+                    }
+                })*/
+                communication.map(obtainedData)
+            }
         }
+    }
 
+    fun deleteTodoItem(todoItemId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val obtainedData = repository.deleteItem(todoItemId)
+            Log.d("gsonon_delete", obtainedData.toString())
+        }
     }
 
     fun setTodoItem(item: TodoItem?) {
@@ -63,7 +86,4 @@ class ItemViewModel(
     fun setSelectedPosition(position: Int) {
         _selectedPosition.postValue(position)
     }
-
-
 }
-
