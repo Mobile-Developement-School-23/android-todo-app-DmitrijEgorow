@@ -29,6 +29,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
 import java.util.UUID
+import javax.inject.Inject
 
 /**
  * A [Fragment] to show all tasks.
@@ -42,7 +43,7 @@ class ListFragment : Fragment() {
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
     private val uiScope = CoroutineScope(Dispatchers.Main)
-    private lateinit var repository: TodoItemsRepository
+    @Inject lateinit var repository: TodoItemsRepository
 
     private val itemViewModel: ItemViewModel by activityViewModels {
         ViewModelFactory(
@@ -59,6 +60,7 @@ class ListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
+        (activity as MainActivity).activityComponent.inject(this)
         _binding = FragmentListBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -77,7 +79,7 @@ class ListFragment : Fragment() {
             ),
         )
 
-        repository = (requireActivity().application as TodoItemsApplication).repository
+        //repository = (requireActivity().application as TodoItemsApplication).repository
         itemViewModel.obtainedData.observe(
             viewLifecycleOwner,
             object : Observer<ObtainedData> {

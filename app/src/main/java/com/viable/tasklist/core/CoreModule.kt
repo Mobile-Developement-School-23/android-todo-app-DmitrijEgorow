@@ -15,7 +15,7 @@ class CoreModule(private val useMocks: Boolean) {
 
     private lateinit var retrofit: Retrofit
 
-    fun init(context: Context) {
+    fun init(/*context: Context*/) {
         val client = OkHttpClient.Builder()
             .connectTimeout(1, TimeUnit.MINUTES)
             .readTimeout(1, TimeUnit.MINUTES)

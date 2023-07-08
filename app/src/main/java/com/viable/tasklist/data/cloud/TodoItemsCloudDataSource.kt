@@ -1,7 +1,9 @@
 package com.viable.tasklist.data.cloud
 
 import com.google.gson.Gson
+import com.viable.tasklist.di.scope.ApplicationScope
 import java.io.Reader
+import javax.inject.Inject
 
 interface TodoItemsCloudDataSource {
 
@@ -10,11 +12,8 @@ interface TodoItemsCloudDataSource {
     suspend fun updateItem(item: TodoItemContainer, revision: Int): TodoSingleItemResponse
     suspend fun deleteItem(itemId: String, revision: Int): TodoSingleItemResponse
 
-    abstract class Abstract :
-        TodoItemsCloudDataSource
-
-    class DefaultCloudDataSource(private val service: TasksService) :
-        TodoItemsCloudDataSource.Abstract() {
+    class DefaultCloudDataSource @Inject constructor(private val service: TasksService) :
+        TodoItemsCloudDataSource {
         override suspend fun getList(): TodoListResponse {
             return service.getList()
         }
@@ -34,43 +33,6 @@ interface TodoItemsCloudDataSource {
 
     abstract class Mock(
         private val rawResourceReader: Reader,
-        gson: Gson,
-    ) : TodoItemsCloudDataSource.Abstract()
+    ) : TodoItemsCloudDataSource
 }
 
-/*
-class DefaultCloudDataSource(private val service: TasksService, gson: Gson) :
-        TodoItemsCloudDataSource.Abstract() {
-        override suspend fun getList(): Flow<NetworkState<List<TodoItemResponse>>> = flow {
-            emit(NetworkState.Loading)
-            val response = service.getList()
-            emit(NetworkState.Success(response.list, response.revision))
-        }.catch {
-            NetworkState.Failure(it)
-        }
-
-        override suspend fun addItem(item: TodoItemContainer, revision: Int): Flow<NetworkState<TodoItemResponse>> = flow {
-            emit(NetworkState.Loading)
-            val response = service.addTask(revision, item)
-            emit(NetworkState.Success(response.element, response.revision))
-        }.catch {
-            emit(NetworkState.Failure(it))
-        }
-
-        override suspend fun updateItem(item: TodoItemContainer): Flow<NetworkState<TodoItemResponse>> = flow {
-            emit(NetworkState.Loading)
-            val response = service.alterTask(1, item.element.id, item)
-            emit(NetworkState.Success(response.element, response.revision))
-        }.catch {
-            emit(NetworkState.Failure(it))
-        }
-
-        override suspend fun deleteItem(item: TodoItemContainer): Flow<NetworkState<TodoItemResponse>> = flow {
-            emit(NetworkState.Loading)
-            val response = service.deleteTask(1, item.element.id)
-            emit(NetworkState.Success(response.element, response.revision))
-        }    .catch {
-            emit(NetworkState.Failure(it))
-        }
-    }
- */

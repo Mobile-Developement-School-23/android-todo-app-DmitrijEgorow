@@ -6,11 +6,14 @@ import com.viable.tasklist.data.cloud.TodoItemContainer
 import com.viable.tasklist.data.cloud.TodoItemResponse
 import com.viable.tasklist.data.cloud.TodoItemsCloudDataSource
 import com.viable.tasklist.data.cloud.TodoSingleItemResponse
+import com.viable.tasklist.di.scope.ApplicationScope
+import com.viable.tasklist.di.scope.MainActivityScope
 import com.viable.tasklist.domain.AbstractMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import retrofit2.HttpException
 import javax.inject.Inject
+
 
 interface TodoItemsRepository {
     suspend fun getItems(forceRefresh: Boolean = false): Flow<RevisionableList<List<TodoItem>>>
@@ -18,7 +21,8 @@ interface TodoItemsRepository {
     suspend fun updateItem(position: Int, item: TodoItem): ObtainedData
     suspend fun deleteItem(itemId: String): ObtainedData
 
-    class Base(
+    @MainActivityScope
+    class Base @Inject constructor(
         private val cachedDataSource: TodoItemsCacheDataSource,
         private val cloudDataSource: TodoItemsCloudDataSource,
         private val receiverMapper: AbstractMapper<TodoItemResponse, TodoItem>,

@@ -2,12 +2,15 @@ package com.viable.tasklist.data.cache
 
 import com.viable.tasklist.data.RevisionableList
 import com.viable.tasklist.data.TodoItem
+import com.viable.tasklist.di.scope.ApplicationScope
+import com.viable.tasklist.di.scope.MainActivityScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
+@MainActivityScope
 class TodoItemsCacheDataSource @Inject constructor(
-    //private val dao: TaskDao,
+    private val dao: TaskDao,
 ) {
 
     private var revision = 1

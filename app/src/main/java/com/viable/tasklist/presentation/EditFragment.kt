@@ -24,6 +24,7 @@ import java.time.ZoneId
 import java.time.ZoneOffset
 import java.util.Calendar
 import java.util.UUID
+import javax.inject.Inject
 
 /**
  * A [Fragment] to edit / add a new task.
@@ -34,7 +35,7 @@ class EditFragment : Fragment() {
 
     private val binding get() = _binding!!
 
-    private lateinit var repository: TodoItemsRepository
+    @Inject lateinit var repository: TodoItemsRepository
 
     private val itemViewModel: ItemViewModel by activityViewModels { ViewModelFactory(repository) }
 
@@ -45,8 +46,8 @@ class EditFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
+        (activity as MainActivity).activityComponent.inject(this)
         _binding = FragmentEditBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
@@ -54,7 +55,7 @@ class EditFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         submitButton = view.findViewById(R.id.submit_item)
-        repository = (requireActivity().application as TodoItemsApplication).repository
+        //repository = (requireActivity().application as TodoItemsApplication).repository
 
         val types = resources.getStringArray(R.array.priorities)
         val arrayAdapter: ArrayAdapter<*> =

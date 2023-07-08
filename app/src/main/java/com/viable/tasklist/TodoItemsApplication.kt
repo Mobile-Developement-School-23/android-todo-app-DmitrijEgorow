@@ -22,9 +22,9 @@ class TodoItemsApplication : Application() {
 
     lateinit var appComponent: AppComponent
 
-    lateinit var cacheDataSource: TodoItemsCacheDataSource
+    /*lateinit var cacheDataSource: TodoItemsCacheDataSource
     lateinit var cloudDataSource: TodoItemsCloudDataSource
-    lateinit var repository: TodoItemsRepository
+    lateinit var repository: TodoItemsRepository*/
 
     override fun onCreate() {
         super.onCreate()
@@ -36,9 +36,9 @@ class TodoItemsApplication : Application() {
         appComponent = DaggerAppComponent.builder()
             .build()
 
-        coreModule.init(this)
+        coreModule.init()
 
-        cacheDataSource = TodoItemsCacheDataSource()
+        /*cacheDataSource = TodoItemsCacheDataSource()
         cloudDataSource = TodoItemsCloudDataSource.DefaultCloudDataSource(
             coreModule.makeService(TasksService::class.java),
         )
@@ -50,7 +50,7 @@ class TodoItemsApplication : Application() {
                 importanceMapper = ImportanceMapper(),
                 getDeviceId(),
             ),
-        )
+        )*/
     }
 
     private fun getDeviceId() =

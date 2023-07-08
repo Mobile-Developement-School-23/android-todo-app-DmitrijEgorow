@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.viable.tasklist.data.cache.TaskDao
 import com.viable.tasklist.data.cache.TaskDatabase
+import com.viable.tasklist.di.scope.ApplicationScope
 import com.viable.tasklist.di.scope.MainActivityScope
 import dagger.Module
 import dagger.Provides

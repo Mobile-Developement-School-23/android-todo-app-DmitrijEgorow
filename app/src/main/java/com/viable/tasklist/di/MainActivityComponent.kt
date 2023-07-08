@@ -2,6 +2,7 @@ package com.viable.tasklist.di
 
 import android.content.Context
 import com.viable.tasklist.data.cache.TodoItemsCacheDataSource
+import com.viable.tasklist.di.scope.ApplicationScope
 import com.viable.tasklist.di.scope.MainActivityScope
 import com.viable.tasklist.presentation.EditFragment
 import com.viable.tasklist.presentation.ListFragment
