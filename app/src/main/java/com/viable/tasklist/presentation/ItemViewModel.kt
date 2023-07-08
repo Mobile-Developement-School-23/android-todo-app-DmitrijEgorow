@@ -18,7 +18,6 @@ import kotlinx.coroutines.withContext
 
 class ItemViewModel(
     private val repository: TodoItemsRepository,
-    // private val communication: Communication<ObtainedData>,
 ) : ViewModel() {
 
     private val _selectedPosition = MutableLiveData(0)

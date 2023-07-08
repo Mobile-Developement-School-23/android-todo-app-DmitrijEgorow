@@ -3,7 +3,6 @@ package com.viable.tasklist.presentation
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
 import com.viable.tasklist.R
 import com.viable.tasklist.TodoItemsApplication
 import com.viable.tasklist.databinding.ActivityMainBinding
@@ -26,10 +25,5 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val navController = findNavController(R.id.nav_host_fragment_content_main)
-
-
-
     }
-
-
 }

@@ -1,4 +1,4 @@
-package com.viable.tasklist.domain
+package com.viable.tasklist.domain.mapper
 
 import com.viable.tasklist.data.TodoItem
 import com.viable.tasklist.data.cloud.TodoItemResponse
@@ -7,7 +7,8 @@ import java.time.ZoneOffset
 interface TaskToCloudMapper<FromT, ToT> : AbstractMapper<FromT, ToT> {
     override fun map(item: FromT): ToT
 
-    class BasicLocalToCloudMapper(private val importanceMapper: ImportanceMapper, private val deviceId: String) : TaskToCloudMapper<TodoItem, TodoItemResponse> {
+    class BasicLocalToCloudMapper(private val importanceMapper: ImportanceMapper, private val deviceId: String) :
+        TaskToCloudMapper<TodoItem, TodoItemResponse> {
         override fun map(item: TodoItem) =
             TodoItemResponse(
                 item.id,

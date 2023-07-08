@@ -6,14 +6,12 @@ import com.viable.tasklist.data.cloud.TodoItemContainer
 import com.viable.tasklist.data.cloud.TodoItemResponse
 import com.viable.tasklist.data.cloud.TodoItemsCloudDataSource
 import com.viable.tasklist.data.cloud.TodoSingleItemResponse
-import com.viable.tasklist.di.scope.ApplicationScope
 import com.viable.tasklist.di.scope.MainActivityScope
-import com.viable.tasklist.domain.AbstractMapper
+import com.viable.tasklist.domain.mapper.AbstractMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import retrofit2.HttpException
 import javax.inject.Inject
-
 
 interface TodoItemsRepository {
     suspend fun getItems(forceRefresh: Boolean = false): Flow<RevisionableList<List<TodoItem>>>
@@ -31,25 +29,20 @@ interface TodoItemsRepository {
 
         private var revision = 1
         override suspend fun getItems(forceRefresh: Boolean): Flow<RevisionableList<List<TodoItem>>> {
-            if (cachedDataSource.isEmpty() || forceRefresh) {
+            return if (cachedDataSource.isEmpty() || forceRefresh) {
                 try {
-                    /*val response = cloudDataSource.getList()
-                    val revision = response.revision
-                    Log.d("gsonon", "revision $revision")
-                    this.revision = revision
-                    val list = response.list*/
                     val list = getCloudResponse()
                     val convertedList = ArrayList<TodoItem>()
                     list.forEach { e -> convertedList.add(receiverMapper.map(e)) }
                     cachedDataSource.setItems(convertedList, revision)
-                    return cachedDataSource.getItems()
+                    cachedDataSource.getItems()
                 } catch (e: HttpException) {
-                    return emptyFlow()
+                    emptyFlow()
                 } catch (e: Exception) {
-                    return emptyFlow()
+                    emptyFlow()
                 }
             } else {
-                return cachedDataSource.getItems()
+                cachedDataSource.getItems()
             }
         }
 
@@ -64,9 +57,6 @@ interface TodoItemsRepository {
         override suspend fun insertNewItem(item: TodoItem): ObtainedData {
             return try {
                 cachedDataSource.addItem(item)
-                /*val revisionableData = getItems(true)
-                        var revision = 1
-                        revisionableData.collectLatest { v -> revision = v.revision }*/
                 getCloudResponse()
                 val container = TodoItemContainer(senderMapper.map(item))
                 val singleItemResponse = cloudDataSource.addItem(container, revision)
@@ -93,7 +83,6 @@ interface TodoItemsRepository {
         }
         override suspend fun deleteItem(itemId: String): ObtainedData {
             return try {
-                // todo cachedDataSource.delete
                 cachedDataSource.deleteItems(itemId)
                 getCloudResponse()
                 val singleItemResponse = cloudDataSource.deleteItem(itemId, revision)

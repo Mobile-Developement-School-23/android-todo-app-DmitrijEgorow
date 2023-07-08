@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.viable.tasklist.R
-import com.viable.tasklist.TodoItemsApplication
 import com.viable.tasklist.data.Importance
 import com.viable.tasklist.data.TodoItem
 import com.viable.tasklist.data.TodoItemsRepository
@@ -55,7 +54,7 @@ class EditFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         submitButton = view.findViewById(R.id.submit_item)
-        //repository = (requireActivity().application as TodoItemsApplication).repository
+        // repository = (requireActivity().application as TodoItemsApplication).repository
 
         val types = resources.getStringArray(R.array.priorities)
         val arrayAdapter: ArrayAdapter<*> =

@@ -15,11 +15,5 @@ class NetworkModule {
         val module = CoreModule(USE_MOCKS)
         module.init()
         return module.makeService(TasksService::class.java)
-
     }
-    /*return Retrofit.Builder()
-        .baseUrl("https://example.com")
-        .build()
-        .create(TasksService::class.java)*/
-
 }

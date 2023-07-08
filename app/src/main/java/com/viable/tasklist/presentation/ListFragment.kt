@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.viable.tasklist.R
-import com.viable.tasklist.TodoItemsApplication
 import com.viable.tasklist.data.Importance
 import com.viable.tasklist.data.ObtainedData
 import com.viable.tasklist.data.TodoItem
@@ -37,13 +36,13 @@ import javax.inject.Inject
 class ListFragment : Fragment() {
 
     private val sharedPreferencesName = "revision"
-
     private val snackbarDelay = 2_000L
-
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
     private val uiScope = CoroutineScope(Dispatchers.Main)
-    @Inject lateinit var repository: TodoItemsRepository
+
+    @Inject
+    lateinit var repository: TodoItemsRepository
 
     private val itemViewModel: ItemViewModel by activityViewModels {
         ViewModelFactory(
@@ -52,7 +51,6 @@ class ListFragment : Fragment() {
     }
 
     private lateinit var adapter: ItemAdapter
-
     private lateinit var preferences: SharedPreferences
 
     override fun onCreateView(
@@ -79,7 +77,6 @@ class ListFragment : Fragment() {
             ),
         )
 
-        //repository = (requireActivity().application as TodoItemsApplication).repository
         itemViewModel.obtainedData.observe(
             viewLifecycleOwner,
             object : Observer<ObtainedData> {
@@ -133,6 +130,7 @@ class ListFragment : Fragment() {
                             adapter.tasks = uiState.data.toMutableList().apply {
                                 add(newItem)
                             }
+
                         is TaskUi.Error -> Any()
                         is TaskUi.Empty -> adapter.tasks = mutableListOf(newItem)
                         else -> listOf(newItem)
@@ -142,11 +140,7 @@ class ListFragment : Fragment() {
         }
 
         ResourcesCompat.getDrawable(resources, R.drawable.divider, requireContext().theme)?.let {
-            binding.recyclerList.addItemDecoration(
-                HorizontalDividerItemDecoration(
-                    it,
-                ),
-            )
+            binding.recyclerList.addItemDecoration(HorizontalDividerItemDecoration(it))
         }
         binding.recyclerList.layoutManager = LinearLayoutManager(context)
         binding.recyclerList.adapter = adapter

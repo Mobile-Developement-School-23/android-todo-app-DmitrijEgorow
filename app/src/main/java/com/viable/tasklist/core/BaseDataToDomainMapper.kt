@@ -1,6 +1,6 @@
 package com.viable.tasklist.core
 
-import com.viable.tasklist.domain.AbstractDataMapper
+import com.viable.tasklist.domain.mapper.AbstractDataMapper
 import retrofit2.HttpException
 import java.net.UnknownHostException
 

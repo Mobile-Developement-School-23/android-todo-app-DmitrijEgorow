@@ -2,7 +2,7 @@ package com.viable.tasklist.data
 
 import com.viable.tasklist.data.cloud.ReceivedData
 import com.viable.tasklist.data.cloud.TodoSingleItemResponse
-import com.viable.tasklist.domain.TasksReceivedDataMapper
+import com.viable.tasklist.domain.mapper.TasksReceivedDataMapper
 
 sealed class ObtainedData {
 

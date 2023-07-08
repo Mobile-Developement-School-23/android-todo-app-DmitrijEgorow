@@ -1,4 +1,4 @@
-package com.viable.tasklist.domain
+package com.viable.tasklist.domain.mapper
 
 import com.viable.tasklist.data.Importance
 

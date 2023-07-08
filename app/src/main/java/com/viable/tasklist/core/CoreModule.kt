@@ -1,6 +1,5 @@
 package com.viable.tasklist.core
 
-import android.content.Context
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -15,7 +14,7 @@ class CoreModule(private val useMocks: Boolean) {
 
     private lateinit var retrofit: Retrofit
 
-    fun init(/*context: Context*/) {
+    fun init() {
         val client = OkHttpClient.Builder()
             .connectTimeout(1, TimeUnit.MINUTES)
             .readTimeout(1, TimeUnit.MINUTES)
@@ -35,6 +34,4 @@ class CoreModule(private val useMocks: Boolean) {
     }
 
     fun <T> makeService(clazz: Class<T>): T = retrofit.create(clazz)
-
-    // override fun viewModel() = MainViewModel(navigator, navigationCommunication)
 }

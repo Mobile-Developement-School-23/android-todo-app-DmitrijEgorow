@@ -1,4 +1,4 @@
-package com.viable.tasklist.domain
+package com.viable.tasklist.domain.mapper
 
 import com.viable.tasklist.core.BaseDataToDomainMapper
 import com.viable.tasklist.core.ErrorType
@@ -16,7 +16,9 @@ interface TasksReceivedDataMapper<T> : AbstractDataMapper.DataToDomain<ReceivedD
         }
     }
 
-    class Error : BaseDataToDomainMapper<ReceivedData, ErrorType>(), TasksReceivedDataMapper<ErrorType> {
+    class Error :
+        BaseDataToDomainMapper<ReceivedData, ErrorType>(),
+        TasksReceivedDataMapper<ErrorType> {
 
         override fun map(data: ReceivedData) = ErrorType.GENERIC_ERROR
         override fun map(e: Exception) = errorType(e)

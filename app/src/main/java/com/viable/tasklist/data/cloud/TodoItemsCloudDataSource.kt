@@ -1,7 +1,5 @@
 package com.viable.tasklist.data.cloud
 
-import com.google.gson.Gson
-import com.viable.tasklist.di.scope.ApplicationScope
 import java.io.Reader
 import javax.inject.Inject
 
@@ -35,4 +33,3 @@ interface TodoItemsCloudDataSource {
         private val rawResourceReader: Reader,
     ) : TodoItemsCloudDataSource
 }
-
