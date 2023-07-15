@@ -7,21 +7,32 @@
 
     <fragment
         android:id="@+id/ListFragment"
-        android:name="com.viable.tasklist.presentation.ListFragment"
+        android:name="com.viable.tasklist.presentation.list.ListFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_list">
-
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
+            android:id="@+id/action_ListFragment_to_EditFragment"
             app:destination="@id/EditFragment" />
+        <action
+            android:id="@+id/action_ListFragment_to_PreferencesFragment"
+            app:destination="@id/PreferencesFragment" />
     </fragment>
     <fragment
         android:id="@+id/EditFragment"
-        android:name="com.viable.tasklist.presentation.EditFragment"
+        android:name="com.viable.tasklist.presentation.edit.EditFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_edit">
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
+            android:id="@+id/action_EditFragment_to_ListFragment"
+            app:destination="@id/ListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/PreferencesFragment"
+        android:name="com.viable.tasklist.presentation.settings.PreferencesFragment"
+        android:label="@string/preferences_fragment_label"
+        tools:layout="@layout/fragment_preferences">
+        <action
+            android:id="@+id/action_PreferencesFragment_to_ListFragment"
             app:destination="@id/ListFragment" />
     </fragment>
 </navigation>

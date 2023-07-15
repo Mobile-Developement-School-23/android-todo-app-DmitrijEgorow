@@ -1,4 +1,4 @@
-package com.viable.tasklist.presentation;
+package com.viable.tasklist.presentation.list;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

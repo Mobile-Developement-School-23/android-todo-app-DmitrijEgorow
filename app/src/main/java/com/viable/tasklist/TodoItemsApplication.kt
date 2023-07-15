@@ -1,8 +1,6 @@
 package com.viable.tasklist
 
 import android.app.Application
-import com.instabug.library.Instabug
-import com.instabug.library.invocation.InstabugInvocationEvent
 import com.viable.tasklist.BuildConfig.USE_MOCKS
 import com.viable.tasklist.core.CoreModule
 import com.viable.tasklist.di.AppComponent
@@ -17,13 +15,17 @@ class TodoItemsApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        Instabug.Builder(this, "871ae90a742cf736954652c5f547b3bb")
+        /*Instabug.Builder(this, "871ae90a742cf736954652c5f547b3bb")
             .setInvocationEvents(InstabugInvocationEvent.SHAKE)
-            .build()
+            .build()*/
 
         appComponent = DaggerAppComponent.builder()
             .build()
 
         coreModule.init()
+    }
+
+    companion object {
+        const val PREFERENCES = "app_preferences"
     }
 }

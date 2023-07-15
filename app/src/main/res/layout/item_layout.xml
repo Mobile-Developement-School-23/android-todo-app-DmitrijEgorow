@@ -30,12 +30,11 @@
 
     <TextView
         android:id="@+id/task_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:maxLines="@integer/item_max_lines"
         android:ellipsize="end"
-        style="@style/AppTheme.Button"
+        style="@style/BoldTextViewStyle"
+        android:layout_marginStart="@dimen/size_xs"
         android:textAppearance="?attr/textAppearanceHeadline6"
         app:layout_constraintBottom_toTopOf="@id/task_deadline"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
@@ -68,10 +67,10 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/task_deadline"
         android:layout_width="0dp"
-        android:layout_height="@dimen/size_m"
+        android:layout_height="wrap_content"
         android:background="@color/transparent"
         android:gravity="start"
-        style="@style/AppTheme.Button"
+        style="@style/CalendarStyle"
         android:text="@string/sample_date"
         app:icon="@drawable/calendar"
         android:textColor="@color/light_grey"
@@ -80,7 +79,7 @@
         app:layout_constraintEnd_toEndOf="@id/guideline"
         app:layout_constraintStart_toEndOf="@id/task_checkbox"
         app:layout_constraintTop_toBottomOf="@id/task_title"
-        tools:text="Задание" />
+        tools:text="@string/sample_date" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

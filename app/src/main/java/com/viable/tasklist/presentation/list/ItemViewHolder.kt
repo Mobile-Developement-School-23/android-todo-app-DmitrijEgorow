@@ -1,4 +1,4 @@
-package com.viable.tasklist.presentation
+package com.viable.tasklist.presentation.list
 
 import android.view.View
 import android.widget.CheckBox
@@ -48,6 +48,7 @@ class ItemViewHolder(
             itemProceedListener.onClick(this.bindingAdapterPosition, preview)
         }
         itemTitle.setOnClickListener {
+            itemProceedListener.onClick(this.bindingAdapterPosition, preview)
         }
 
         when (preview.importance) {

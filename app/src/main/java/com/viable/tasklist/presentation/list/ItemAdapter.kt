@@ -1,4 +1,4 @@
-package com.viable.tasklist.presentation
+package com.viable.tasklist.presentation.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -63,7 +63,7 @@ class ItemAdapter(
 
         holder.itemView.setOnClickListener { view ->
             view.findNavController().navigate(
-                R.id.action_FirstFragment_to_SecondFragment,
+                R.id.action_ListFragment_to_EditFragment,
             )
         }
 

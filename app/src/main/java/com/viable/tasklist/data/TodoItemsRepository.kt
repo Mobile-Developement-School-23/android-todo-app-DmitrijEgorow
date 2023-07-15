@@ -7,13 +7,14 @@ import com.viable.tasklist.data.cloud.TodoItemResponse
 import com.viable.tasklist.data.cloud.TodoItemsCloudDataSource
 import com.viable.tasklist.data.cloud.TodoSingleItemResponse
 import com.viable.tasklist.di.scope.MainActivityScope
+import com.viable.tasklist.domain.TaskRepository
 import com.viable.tasklist.domain.mapper.AbstractMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import retrofit2.HttpException
 import javax.inject.Inject
 
-interface TodoItemsRepository {
+interface TodoItemsRepository : TaskRepository {
     suspend fun getItems(forceRefresh: Boolean = false): Flow<RevisionableList<List<TodoItem>>>
     suspend fun insertNewItem(item: TodoItem): ObtainedData
     suspend fun updateItem(position: Int, item: TodoItem): ObtainedData

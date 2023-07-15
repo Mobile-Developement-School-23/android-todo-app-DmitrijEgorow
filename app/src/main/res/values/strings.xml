@@ -19,11 +19,18 @@
     <string name="sample_date">14.06.2023</string>
     <string name="priority">Приоритет</string>
     <string name="task_template_done">%1$s</string>
+    <string name="task_template_with_deadline_text">Приближается дедлайн: %1$s</string>
     <string name="my_deals">Мои дела</string>
     <string name="completed">Выполнено</string>
     <string name="completed_with_num">Выполнено дел: %1$d</string>
     <string name="sync_error">Ошибка синхронизации</string>
     <string name="sync_success">Успешно</string>
     <string name="undo_delete">Отменить удаление</string>
-    <string name="one_task_deleted">1 элемент удален</string>
+    <string name="one_task_deleted">1 элемент удален: %1$s</string>
+    <string name="preferences_fragment_label">Preferences Fragment</string>
+    <string name="visibility_label">Скрыть выполненные дела</string>
+    <string name="preferences_label">Перейти в настройки</string>
+    <string name="theme">Тема приложения</string>
+    <string name="channel_description">Напоминания о делах</string>
+    <string name="channel_name">Дела</string>
 </resources>
