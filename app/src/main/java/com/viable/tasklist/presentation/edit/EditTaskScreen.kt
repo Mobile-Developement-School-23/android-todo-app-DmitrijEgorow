@@ -1,6 +1,5 @@
 package com.viable.tasklist.presentation.edit
 
-
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -83,7 +82,7 @@ fun PlayerPage(
     ) { padding ->
         Box(
             modifier = Modifier
-                .padding(padding)
+                .padding(padding),
         ) {
             PlayerPageContent(
                 state,
@@ -100,7 +99,7 @@ private fun ColumnScope.ExpandVisibility(
     AnimatedVisibility(
         visible = visible,
         enter = expandVertically(),
-        exit = shrinkVertically()
+        exit = shrinkVertically(),
     ) {
         content()
     }
@@ -122,7 +121,7 @@ private fun PlayerPageTopAppBar(
             ) {
                 Icon(
                     Icons.Default.Close,
-                    contentDescription = null
+                    contentDescription = null,
                 )
             }
         },
@@ -133,25 +132,22 @@ private fun PlayerPageTopAppBar(
 fun PlayerPageContent(
     state: PlayerPageState,
 ) {
-
     Column(
         verticalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier.fillMaxHeight()
+        modifier = Modifier.fillMaxHeight(),
     ) {
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
                 .weight(1f)
-                //.maybeBackground(state.backgroundColor)
-                .fillMaxWidth()
+                // .maybeBackground(state.backgroundColor)
+                .fillMaxWidth(),
         ) {
         }
-
 
         ExpandVisibility(!state.focusMode) {
             PlayerControlsRow(state)
         }
-
     }
 }
 
@@ -161,20 +157,20 @@ private fun PlayerControlsRow(
 ) {
     Box(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxWidth(),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Box(
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 IconButton(
                     onClick = { state.shouldPlay = !state.shouldPlay },
                 ) {
                     Icon(
                         Icons.Filled.PlayArrow,
-                        contentDescription = null
+                        contentDescription = null,
                     )
                 }
                 Text(
@@ -182,7 +178,7 @@ private fun PlayerControlsRow(
                     style = TextStyle(fontSize = 8.sp),
                     textAlign = TextAlign.Center,
                     modifier = Modifier
-                        .padding(top = 48.dp, bottom = 8.dp)
+                        .padding(top = 48.dp, bottom = 8.dp),
                 )
             }
             /*Slider(
@@ -197,7 +193,7 @@ private fun PlayerControlsRow(
                 Icon(
                     Icons.Filled.Call,
                     tint = Color.Black,
-                    contentDescription = null
+                    contentDescription = null,
                 )
             }
         }
@@ -207,11 +203,10 @@ private fun PlayerControlsRow(
             color = Color.Gray,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(bottom = 12.dp)
+                .padding(bottom = 12.dp),
         )
     }
 }
-
 
 @Composable
 private fun BackgroundToolbarItem(
@@ -225,7 +220,7 @@ private fun BackgroundToolbarItem(
             .background(color)
             .clickable(onClick = onClick)
             .size(24.dp)
-            .border(1.dp, strokeColor, shape = CircleShape)
+            .border(1.dp, strokeColor, shape = CircleShape),
     )
 }
 
@@ -282,7 +277,6 @@ fun MyLayoutPreview() {
     PlayerPage(null)//EditTaskScreen()
 }*/
 
-
 @Composable
 fun EditScreen() {
     Scaffold(
@@ -295,25 +289,25 @@ fun EditScreen() {
                     IconButton(onClick = { /* Cancel clicked */ }) {
                         Icon(Icons.Default.Close, contentDescription = "Cancel")
                     }
-                }
+                },
             )
-        }
+        },
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
+                .padding(padding),
         ) {
             OutlinedTextField(
                 value = "",
                 onValueChange = {},
                 label = { Text("Item name") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
             Spacer(modifier = Modifier.height(16.dp))
             Button(
                 onClick = { /*Save clicked */ },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Text(text = "Save")
             }
@@ -325,6 +319,4 @@ fun EditScreen() {
 @Composable
 fun TaskEditScreenPreview() {
     EditScreen()
-
 }
-

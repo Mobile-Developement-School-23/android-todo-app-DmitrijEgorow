@@ -15,24 +15,23 @@ class DeleteSnackbarHelper(
     private val rootView: View,
     private val layoutInflater: LayoutInflater,
     private val adapter: ItemAdapter,
-    private val item: TodoItem
+    private val item: TodoItem,
 ) {
 
     private val snackbarMaxTextLength = 7
 
     fun onDeleteSnackbarRequest(id: String, position: Int): Snackbar {
-
         val snackbarText = context.getString(
             R.string.one_task_deleted,
-            item.text.substring(0, minOf(item.text.length, snackbarMaxTextLength))
+            item.text.substring(0, minOf(item.text.length, snackbarMaxTextLength)),
         )
         val snackbar = Snackbar.make(
             rootView,
             snackbarText,
             Snackbar.LENGTH_INDEFINITE,
         ).setAction(context.getString(R.string.undo_delete)) {
-                adapter.addItem(position, item)
-            }
+            adapter.addItem(position, item)
+        }
 
         val snackbarLayout = snackbar.view
         val textView =
@@ -48,7 +47,5 @@ class DeleteSnackbarHelper(
         layout.addView(snackView, 0)
 
         return snackbar
-
-
     }
 }

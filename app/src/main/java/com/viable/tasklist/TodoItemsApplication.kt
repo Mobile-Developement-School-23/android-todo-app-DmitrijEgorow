@@ -1,8 +1,6 @@
 package com.viable.tasklist
 
 import android.app.Application
-import com.instabug.library.Instabug
-import com.instabug.library.invocation.InstabugInvocationEvent
 import com.viable.tasklist.BuildConfig.USE_MOCKS
 import com.viable.tasklist.core.CoreModule
 import com.viable.tasklist.di.AppComponent

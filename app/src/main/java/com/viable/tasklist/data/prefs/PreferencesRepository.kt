@@ -15,6 +15,5 @@ interface PreferencesRepository {
         override fun updateSettings(settings: UserSettings) {
             dataSource.updateSettings(settings)
         }
-
     }
 }

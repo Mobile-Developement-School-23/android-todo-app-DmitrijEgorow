@@ -3,20 +3,21 @@ package com.viable.tasklist.data.prefs
 import android.content.SharedPreferences
 import com.viable.tasklist.utils.ThemePreferences
 
-
 interface PreferencesDataSource {
     fun getSettings(): UserSettings
 
     fun updateSettings(settingsDto: UserSettings)
-    class DefaultPreferencesDataSource (private val sharedPreferences: SharedPreferences) :
+    class DefaultPreferencesDataSource(private val sharedPreferences: SharedPreferences) :
         PreferencesDataSource {
 
         override fun getSettings(): UserSettings {
             return UserSettings(
                 currentTheme = ThemePreferences.valueOf(
-                    sharedPreferences.getString(THEME_KEY,
-                        ThemePreferences.SYSTEM.name)!!
-                )
+                    sharedPreferences.getString(
+                        THEME_KEY,
+                        ThemePreferences.SYSTEM.name,
+                    )!!,
+                ),
             )
         }
 

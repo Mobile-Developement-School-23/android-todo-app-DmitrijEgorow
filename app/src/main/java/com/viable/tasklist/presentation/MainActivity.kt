@@ -3,7 +3,6 @@ package com.viable.tasklist.presentation
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.viable.tasklist.R
 import com.viable.tasklist.TodoItemsApplication
@@ -14,17 +13,18 @@ import com.viable.tasklist.presentation.notifications.NotificationHelper
 import com.viable.tasklist.presentation.settings.PreferencesViewModel
 import javax.inject.Inject
 
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     lateinit var activityComponent: MainActivityComponent
+
     @Inject
     lateinit var repositoryPrefs: PreferencesRepository
     val preferencesViewModel: PreferencesViewModel by viewModels<PreferencesViewModel> {
         TaskViewModelFactory.PreferencesViewModelFactory(
-        repositoryPrefs,
-    ) }
+            repositoryPrefs,
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +44,5 @@ class MainActivity : AppCompatActivity() {
 
         val notificationHelper = NotificationHelper(applicationContext)
         notificationHelper.createNotificationChannel()
-
     }
 }

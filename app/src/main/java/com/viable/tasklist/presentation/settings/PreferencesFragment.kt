@@ -62,7 +62,7 @@ class PreferencesFragment : Fragment() {
                 parent: AdapterView<*>?,
                 view: View?,
                 position: Int,
-                id: Long
+                id: Long,
             ) {
                 when (position) {
                     0 -> preferencesViewModel.onThemeUpdate(ThemePreferences.LIGHT)
@@ -74,7 +74,6 @@ class PreferencesFragment : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
         }
-
 
         /*binding..setOnClickListener { v ->
             v.isActivated = !(v.isActivated)

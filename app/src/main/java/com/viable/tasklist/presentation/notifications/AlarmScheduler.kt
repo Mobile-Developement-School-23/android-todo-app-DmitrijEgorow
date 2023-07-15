@@ -13,7 +13,6 @@ import java.util.Calendar
 import java.util.Date
 import kotlin.random.Random
 
-
 class AlarmScheduler(private val context: Context) {
 
     fun scheduleAlarm(item: TodoItem) {
@@ -39,7 +38,8 @@ class AlarmScheduler(private val context: Context) {
             val formatter = DefaultItemFormatter(context.resources)
             val formattedDeadline = formatter.wrapWithTemplate(
                 formatter.formatDate(deadline.toString()),
-                R.string.task_template_with_deadline_text, false
+                R.string.task_template_with_deadline_text,
+                false,
             ).toString()
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             Log.d("gsonon zone", formattedDeadline)
@@ -48,16 +48,17 @@ class AlarmScheduler(private val context: Context) {
                 putExtra("Content", formattedDeadline)
             }
             val pendingIntent = PendingIntent.getBroadcast(
-                context, Random.nextInt(), intent,
-                PendingIntent.FLAG_IMMUTABLE
+                context,
+                Random.nextInt(),
+                intent,
+                PendingIntent.FLAG_IMMUTABLE,
             )
 
             alarmManager.setAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
                 calendar.timeInMillis,
-                pendingIntent
+                pendingIntent,
             )
         }
-
     }
 }

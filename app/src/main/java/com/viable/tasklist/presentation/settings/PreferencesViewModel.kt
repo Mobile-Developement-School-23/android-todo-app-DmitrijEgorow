@@ -32,11 +32,11 @@ class PreferencesViewModel(
 
     private fun switchTheme(theme: ThemePreferences) {
         AppCompatDelegate.setDefaultNightMode(
-            when(theme) {
+            when (theme) {
                 ThemePreferences.LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
                 ThemePreferences.DARK -> AppCompatDelegate.MODE_NIGHT_YES
                 ThemePreferences.SYSTEM -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-            }
+            },
         )
     }
 }

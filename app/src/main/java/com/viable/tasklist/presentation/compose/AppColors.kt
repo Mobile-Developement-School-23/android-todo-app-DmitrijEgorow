@@ -10,15 +10,15 @@ data class AppColors(
     val themeColors: Colors,
 
     // Custom colors here
-    val topAppBarBackground: Color = mainColor
+    val topAppBarBackground: Color = mainColor,
 )
 
 internal val LightColorPalette = AppColors(
-    themeColors = lightColors()
+    themeColors = lightColors(),
 )
 
 internal val DarkColorPalette = AppColors(
-    themeColors = darkColors()
+    themeColors = darkColors(),
 )
 
 internal val LocalAppColors = staticCompositionLocalOf { LightColorPalette }

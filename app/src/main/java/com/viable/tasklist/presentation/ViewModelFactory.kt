@@ -9,10 +9,10 @@ import com.viable.tasklist.presentation.notifications.AlarmScheduler
 import com.viable.tasklist.presentation.settings.PreferencesViewModel
 
 abstract class TaskViewModelFactory(private val repository: TaskRepository) : ViewModelProvider.Factory {
-     class DefaultTaskViewModelFactory(
-         private val repository: TodoItemsRepository,
-         private val alarmScheduler: AlarmScheduler?
-     ) : ViewModelProvider.Factory {
+    class DefaultTaskViewModelFactory(
+        private val repository: TodoItemsRepository,
+        private val alarmScheduler: AlarmScheduler?,
+    ) : ViewModelProvider.Factory {
         override fun<T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(ItemViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
@@ -22,7 +22,7 @@ abstract class TaskViewModelFactory(private val repository: TaskRepository) : Vi
         }
     }
 
-     class PreferencesViewModelFactory(private val repository: PreferencesRepository) : ViewModelProvider.Factory {
+    class PreferencesViewModelFactory(private val repository: PreferencesRepository) : ViewModelProvider.Factory {
         override fun<T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(PreferencesViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")

@@ -14,7 +14,6 @@ import com.viable.tasklist.R
 import com.viable.tasklist.presentation.MainActivity
 import kotlin.random.Random
 
-
 class NotificationHelper(private val context: Context) {
 
     companion object {
@@ -41,16 +40,18 @@ class NotificationHelper(private val context: Context) {
             .setContentText(content)
             .setContentIntent(
                 PendingIntent.getActivity(
-                    context, Random.nextInt(),
-                    Intent(context, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE
-                )
+                    context,
+                    Random.nextInt(),
+                    Intent(context, MainActivity::class.java),
+                    PendingIntent.FLAG_IMMUTABLE,
+                ),
             )
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
         with(NotificationManagerCompat.from(context)) {
             if (ActivityCompat.checkSelfPermission(
                     context,
-                    Manifest.permission.POST_NOTIFICATIONS
+                    Manifest.permission.POST_NOTIFICATIONS,
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
                 return

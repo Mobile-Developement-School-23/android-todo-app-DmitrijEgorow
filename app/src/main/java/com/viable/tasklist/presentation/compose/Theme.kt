@@ -6,7 +6,7 @@ import androidx.compose.runtime.*
 @Composable
 fun ComposeTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val colors = if (darkTheme) {
         DarkColorPalette
@@ -17,13 +17,13 @@ fun ComposeTheme(
     val shapes = LocalAppShapes.current
 
     CompositionLocalProvider(
-        LocalAppColors provides colors
+        LocalAppColors provides colors,
     ) {
         MaterialTheme(
             colors = colors.themeColors,
             typography = typography,
             shapes = shapes,
-            content = content
+            content = content,
         )
     }
 }

@@ -1,6 +1,5 @@
 package com.viable.tasklist.presentation.list
 
-
 import android.R.attr.text
 import android.content.Context
 import android.content.SharedPreferences
@@ -30,15 +29,14 @@ import com.viable.tasklist.presentation.TaskUi
 import com.viable.tasklist.presentation.TaskViewModelFactory
 import com.viable.tasklist.presentation.notifications.AlarmScheduler
 import com.viable.tasklist.presentation.settings.PreferencesViewModel
-import java.time.LocalDateTime
-import java.util.UUID
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.LocalDateTime
+import java.util.UUID
 import javax.inject.Inject
-
 
 /**
  * A [Fragment] to show all tasks.
@@ -53,16 +51,16 @@ class ListFragment : Fragment() {
 
     @Inject
     lateinit var repository: TodoItemsRepository
+
     @Inject
     lateinit var alarmScheduler: AlarmScheduler
 
     private val itemViewModel: ItemViewModel by activityViewModels {
         TaskViewModelFactory.DefaultTaskViewModelFactory(
             repository,
-            alarmScheduler
+            alarmScheduler,
         )
     }
-
 
     @Inject
     lateinit var repositoryPrefs: PreferencesRepository
@@ -72,7 +70,6 @@ class ListFragment : Fragment() {
             repositoryPrefs,
         )
     }
-
 
     private lateinit var adapter: ItemAdapter
     private lateinit var preferences: SharedPreferences
@@ -166,8 +163,8 @@ class ListFragment : Fragment() {
         ResourcesCompat.getDrawable(resources, R.drawable.divider, requireContext().theme)?.let {
             binding.recyclerList.addItemDecoration(
                 HorizontalDividerItemDecoration(
-                    it
-                )
+                    it,
+                ),
             )
         }
         binding.recyclerList.layoutManager = LinearLayoutManager(context)
@@ -183,7 +180,7 @@ class ListFragment : Fragment() {
                         binding.root,
                         layoutInflater,
                         adapter,
-                        item
+                        item,
                     ).onDeleteSnackbarRequest(id, position)
                     snackbar.show()
                     uiScope.launch {
