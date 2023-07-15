@@ -1,4 +1,4 @@
-package com.viable.tasklist.presentation
+package com.viable.tasklist.presentation.edit
 
 import android.os.Bundle
 import android.text.Editable
@@ -17,6 +17,10 @@ import com.viable.tasklist.data.Importance
 import com.viable.tasklist.data.TodoItem
 import com.viable.tasklist.data.TodoItemsRepository
 import com.viable.tasklist.databinding.FragmentEditBinding
+import com.viable.tasklist.presentation.ItemViewModel
+import com.viable.tasklist.presentation.MainActivity
+import com.viable.tasklist.presentation.TaskViewModelFactory
+import com.viable.tasklist.presentation.notifications.AlarmScheduler
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -34,9 +38,14 @@ class EditFragment : Fragment() {
 
     private val binding get() = _binding!!
 
-    @Inject lateinit var repository: TodoItemsRepository
+    @Inject
+    lateinit var repository: TodoItemsRepository
+    @Inject
+    lateinit var alarmScheduler: AlarmScheduler
 
-    private val itemViewModel: ItemViewModel by activityViewModels { ViewModelFactory(repository) }
+    private val itemViewModel: ItemViewModel by activityViewModels {
+        TaskViewModelFactory.DefaultTaskViewModelFactory(repository, null)
+    }
 
     private lateinit var submitButton: Button
 
@@ -54,7 +63,6 @@ class EditFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         submitButton = view.findViewById(R.id.submit_item)
-        // repository = (requireActivity().application as TodoItemsApplication).repository
 
         val types = resources.getStringArray(R.array.priorities)
         val arrayAdapter: ArrayAdapter<*> =
@@ -67,10 +75,10 @@ class EditFragment : Fragment() {
             binding.calendar.visibility = if (isChecked) View.VISIBLE else View.GONE
         }
         binding.deleteButton.setOnClickListener {
-            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
+            findNavController().navigate(R.id.action_EditFragment_to_ListFragment)
         }
         view.findViewById<Button>(R.id.cancel_item).setOnClickListener {
-            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
+            findNavController().navigate(R.id.action_EditFragment_to_ListFragment)
             itemViewModel.setTodoItem(null)
         }
 
@@ -85,7 +93,7 @@ class EditFragment : Fragment() {
         )
 
         submitButton.setOnClickListener {
-            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
+            findNavController().navigate(R.id.action_EditFragment_to_ListFragment)
             itemViewModel.setTodoItem(null)
             val importance = when (binding.prioritySpinner.selectedItemId) {
                 0L -> Importance.LOW

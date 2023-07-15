@@ -5,4 +5,9 @@
         <item>Обычный</item>
         <item>Высокий</item>
     </array>
+    <array name="theme">
+        <item>Светлая</item>
+        <item>Тёмная</item>
+        <item>Как в системе</item>
+    </array>
 </resources>

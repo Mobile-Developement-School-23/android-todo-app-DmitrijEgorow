@@ -1,4 +1,4 @@
-package com.viable.tasklist.presentation
+package com.viable.tasklist.presentation.list
 
 import android.graphics.Canvas
 import android.graphics.Color
@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class SwipeToDeleteCallback(
     private val adapter: ItemAdapter,
-    private val deleteItem: (String, Int) -> Unit,
+    private val deleteItem: (id: String, position: Int) -> Unit,
     private val deleteIcon: Drawable,
     private val tickIcon: Drawable,
 ) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {

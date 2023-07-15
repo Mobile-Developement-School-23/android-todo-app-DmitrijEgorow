@@ -111,38 +111,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/materialCardView" />
 
-
-            <!-- <LinearLayout
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:layout_marginTop="16dp"
-                 android:gravity="end"
-                 android:orientation="horizontal">
-
-                 <Button
-                     android:id="@+id/close_button"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:text="Закрыть" />
-
-                 <Button
-                     android:id="@+id/save_button"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_marginStart="8dp"
-                     android:text="Сохранить" />
-
-
-                 &lt;!&ndash;<Button
-                     android:id="@+id/button_second"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:text="@string/previous"
-                     app:layout_constraintBottom_toTopOf="@id/textview_second"
-                     app:layout_constraintEnd_toEndOf="parent"
-                     app:layout_constraintStart_toStartOf="parent"
-                     app:layout_constraintTop_toTopOf="parent" />&ndash;&gt;
-             </LinearLayout>-->
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

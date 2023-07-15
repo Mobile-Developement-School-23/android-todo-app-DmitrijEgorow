@@ -43,6 +43,10 @@ android {
     buildFeatures {
         viewBinding = true
         buildConfig = true
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
     lint {
         warningsAsErrors = true
@@ -90,9 +94,34 @@ dependencies {
     implementation(libs.dagger)
     kapt(libs.dagger.compiler)
 
+    // Compose
+    val composeBom = platform(libs.androidx.compose.bom)
+    implementation(libs.accompanist.themeadapter.material)
+    implementation(libs.accompanist.permissions)
+    implementation(libs.androidx.activity.compose)
+    // implementation(libs.androidx.compose.compiler)
+    implementation(composeBom)
+    implementation(libs.androidx.compose.foundation.core)
+    implementation(libs.androidx.compose.foundation.layout)
+    implementation(libs.androidx.compose.animation)
+    implementation(libs.androidx.compose.material.core)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.lifecycle.runtimeCompose)
+    implementation(libs.androidx.lifecycle.viewModelCompose)
+
+    debugImplementation(composeBom)
+    debugImplementation(libs.androidx.compose.ui.tooling.core)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
+
     implementation(libs.instabug)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.uiautomator)
+    androidTestImplementation(libs.kakao)
     androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.androidx.espresso.intents)
+    androidTestImplementation(libs.androidx.runner)
+    androidTestImplementation(libs.androidx.rules)
 }

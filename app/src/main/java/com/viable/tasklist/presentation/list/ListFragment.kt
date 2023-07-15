@@ -1,5 +1,7 @@
-package com.viable.tasklist.presentation
+package com.viable.tasklist.presentation.list
 
+
+import android.R.attr.text
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -20,15 +22,23 @@ import com.viable.tasklist.data.Importance
 import com.viable.tasklist.data.ObtainedData
 import com.viable.tasklist.data.TodoItem
 import com.viable.tasklist.data.TodoItemsRepository
+import com.viable.tasklist.data.prefs.PreferencesRepository
 import com.viable.tasklist.databinding.FragmentListBinding
+import com.viable.tasklist.presentation.ItemViewModel
+import com.viable.tasklist.presentation.MainActivity
+import com.viable.tasklist.presentation.TaskUi
+import com.viable.tasklist.presentation.TaskViewModelFactory
+import com.viable.tasklist.presentation.notifications.AlarmScheduler
+import com.viable.tasklist.presentation.settings.PreferencesViewModel
+import java.time.LocalDateTime
+import java.util.UUID
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.time.LocalDateTime
-import java.util.UUID
 import javax.inject.Inject
+
 
 /**
  * A [Fragment] to show all tasks.
@@ -36,19 +46,33 @@ import javax.inject.Inject
 class ListFragment : Fragment() {
 
     private val sharedPreferencesName = "revision"
-    private val snackbarDelay = 2_000L
+    private val snackbarDelay = 5_100L
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
     private val uiScope = CoroutineScope(Dispatchers.Main)
 
     @Inject
     lateinit var repository: TodoItemsRepository
+    @Inject
+    lateinit var alarmScheduler: AlarmScheduler
 
     private val itemViewModel: ItemViewModel by activityViewModels {
-        ViewModelFactory(
+        TaskViewModelFactory.DefaultTaskViewModelFactory(
             repository,
+            alarmScheduler
         )
     }
+
+
+    @Inject
+    lateinit var repositoryPrefs: PreferencesRepository
+
+    private val preferencesViewModel: PreferencesViewModel by activityViewModels {
+        TaskViewModelFactory.PreferencesViewModelFactory(
+            repositoryPrefs,
+        )
+    }
+
 
     private lateinit var adapter: ItemAdapter
     private lateinit var preferences: SharedPreferences
@@ -103,7 +127,7 @@ class ListFragment : Fragment() {
             { position, _ ->
                 itemViewModel.setSelectedPosition(position)
                 itemViewModel.setTodoItem(adapter.tasks[position])
-                findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+                findNavController().navigate(R.id.action_ListFragment_to_EditFragment)
             },
             { position, isCompleted ->
                 itemViewModel.updateTodoItem(
@@ -140,7 +164,11 @@ class ListFragment : Fragment() {
         }
 
         ResourcesCompat.getDrawable(resources, R.drawable.divider, requireContext().theme)?.let {
-            binding.recyclerList.addItemDecoration(HorizontalDividerItemDecoration(it))
+            binding.recyclerList.addItemDecoration(
+                HorizontalDividerItemDecoration(
+                    it
+                )
+            )
         }
         binding.recyclerList.layoutManager = LinearLayoutManager(context)
         binding.recyclerList.adapter = adapter
@@ -150,14 +178,13 @@ class ListFragment : Fragment() {
                 adapter,
                 { id, position ->
                     val item = adapter.removeItem(position)
-                    val snackbar = Snackbar.make(
+                    val snackbar = DeleteSnackbarHelper(
+                        requireContext(),
                         binding.root,
-                        getString(R.string.one_task_deleted),
-                        Snackbar.LENGTH_LONG,
-                    )
-                        .setAction(getString(R.string.undo_delete)) {
-                            adapter.addItem(position, item)
-                        }
+                        layoutInflater,
+                        adapter,
+                        item
+                    ).onDeleteSnackbarRequest(id, position)
                     snackbar.show()
                     uiScope.launch {
                         delay(snackbarDelay)
@@ -180,8 +207,11 @@ class ListFragment : Fragment() {
         binding.visibility.setOnClickListener { v ->
             v.isActivated = !(v.isActivated)
         }
-        binding.fab.setOnClickListener { view ->
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+        binding.preferences.setOnClickListener {
+            findNavController().navigate(R.id.action_ListFragment_to_PreferencesFragment)
+        }
+        binding.fab.setOnClickListener {
+            findNavController().navigate(R.id.action_ListFragment_to_EditFragment)
         }
     }
 

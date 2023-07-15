@@ -17,13 +17,17 @@ class TodoItemsApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        Instabug.Builder(this, "871ae90a742cf736954652c5f547b3bb")
+        /*Instabug.Builder(this, "871ae90a742cf736954652c5f547b3bb")
             .setInvocationEvents(InstabugInvocationEvent.SHAKE)
-            .build()
+            .build()*/
 
         appComponent = DaggerAppComponent.builder()
             .build()
 
         coreModule.init()
+    }
+
+    companion object {
+        const val PREFERENCES = "app_preferences"
     }
 }

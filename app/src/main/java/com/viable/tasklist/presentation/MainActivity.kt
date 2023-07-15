@@ -7,6 +7,8 @@ import com.viable.tasklist.R
 import com.viable.tasklist.TodoItemsApplication
 import com.viable.tasklist.databinding.ActivityMainBinding
 import com.viable.tasklist.di.MainActivityComponent
+import com.viable.tasklist.presentation.notifications.AlarmScheduler
+import com.viable.tasklist.presentation.notifications.NotificationHelper
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,5 +27,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val navController = findNavController(R.id.nav_host_fragment_content_main)
+
+        val notificationHelper = NotificationHelper(applicationContext)
+        notificationHelper.createNotificationChannel()
+
     }
 }
