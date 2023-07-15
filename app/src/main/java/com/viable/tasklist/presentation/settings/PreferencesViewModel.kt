@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.viable.tasklist.data.prefs.PreferencesRepository
+import com.viable.tasklist.data.prefs.UserSettings
 import com.viable.tasklist.utils.ThemePreferences
 
 class PreferencesViewModel(
@@ -18,12 +19,14 @@ class PreferencesViewModel(
 
     init {
         currentTheme = preferencesRepository.getSettings().currentTheme
+        switchTheme(currentTheme)
         _themeLiveData.value = currentTheme
     }
 
     fun onThemeUpdate(theme: ThemePreferences) {
         _themeLiveData.value = theme
         switchTheme(theme)
+        preferencesRepository.updateSettings(UserSettings(theme))
         Log.d("gsonon", "current theme = $theme")
     }
 

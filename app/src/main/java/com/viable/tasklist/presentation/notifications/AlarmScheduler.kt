@@ -24,15 +24,15 @@ class AlarmScheduler(private val context: Context) {
             set(Calendar.SECOND, 1)
         }*/
 
-        if (item.deadline != null) {
+        if (item.deadline != null && !item.isCompleted) {
             val deadline = item.deadline
             val zoneId = ZoneId.systemDefault()
             Log.d("gsonon zone", zoneId.toString())
             val date = Date.from(deadline.atZone(zoneId).toInstant())
             val calendar = Calendar.getInstance().apply {
                 time = date
-                set(Calendar.HOUR_OF_DAY, 3)
-                set(Calendar.MINUTE, 3)
+                set(Calendar.HOUR_OF_DAY, 1)
+                set(Calendar.MINUTE, 1)
                 set(Calendar.SECOND, 1)
             }
             Log.d("gsonon zone", calendar.time.toString())
