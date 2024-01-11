@@ -17,10 +17,6 @@ class TodoItemsApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        Instabug.Builder(this, "871ae90a742cf736954652c5f547b3bb")
-            .setInvocationEvents(InstabugInvocationEvent.SHAKE)
-            .build()
-
         appComponent = DaggerAppComponent.builder()
             .build()
 
